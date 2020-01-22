@@ -1,0 +1,45 @@
+select SQL_CALC_FOUND_ROWS e.id,e.no_of_attendees,e.audience_profile,e.sponsor_offer,e.event_name,e.logo,e.image,e.url,e.slug,
+e.city_id as city, e.premium, e.hot_event,
+(select status from app_event_stalls where event_id=e.id) as stalls,
+(select default_images from app_tags where id=event_category_id and status=1) as cat_img,
+(select at.tag_title from app_tags as at where at.status=1 and at.id=e.event_category_id) as category,
+(select ec.seo_url from app_eventcategories as ec where ec.status=1 and ec.tag_id=e.event_category_id) as seo_url,
+e.minsprice,e.maxsprice,e.sprice_from, e.sprice_to,e.views, 
+IFNULL(date_format(from_unixtime(e.event_strt_date), '%D %M, %Y'), 'tentative') as from_date_formatted
+from app_events as e order by e.id desc;
+
+select SQL_CALC_FOUND_ROWS e.id,
+		e.no_of_attendees,e.audience_profile,e.sponsor_offer,e.event_name,e.logo,e.image,e.url,e.slug,
+		e.city_id as city, e.premium, e.hot_event,
+		(select count(id) from app_event_stalls where event_id=e.id and status =1 group by event_id) as stalls,
+		(select default_images from app_tags where id=event_category_id and status=1) as cat_img,
+		(select at.tag_title from app_tags as at where at.status=1 and at.id=e.event_category_id) as category,
+		(select ec.seo_url from app_eventcategories as ec where ec.status=1 and ec.tag_id=e.event_category_id) as seo_url,
+		e.minsprice,e.maxsprice,e.sprice_from, e.sprice_to,e.views,
+        
+		IFNULL(date_format(from_unixtime(e.event_strt_date), '%D %M, %Y'), 'tentative') as from_date_formatted
+		from app_events as e order by e.id desc;
+    
+    
+
+select e.id,e.industry,
+		e.no_of_attendees,e.audience_profile,e.sponsor_offer,e.event_name,e.logo,e.image,e.url,e.slug,
+		e.city_id as city, e.premium, e.hot_event,
+		(select count(id) from app_event_stalls where event_id=e.id and status =1 group by event_id) as stalls,
+		(select default_images from app_tags where id=event_category_id and status=1) as cat_img,
+		(select at.tag_title from app_tags as at where at.status=1 and at.id=e.event_category_id) as category,
+		(select ec.seo_url from app_eventcategories as ec where ec.status=1 and ec.tag_id=e.event_category_id) as seo_url,
+		e.minsprice,e.maxsprice,e.sprice_from, e.sprice_to,e.views,
+		IFNULL(date_format(from_unixtime(e.event_strt_date), '%D %M, %Y'), 'tentative') as from_date_formatted
+		from app_events as e where DATE_FORMAT( FROM_UNIXTIME( event_strt_date ) ,  '%Y-%m-%d' ) > '2019-04-01' order by e.id desc limit 100;
+    
+select e.id,e.industry,
+		e.no_of_attendees,e.audience_profile,e.sponsor_offer,e.event_name,e.logo,e.image,e.url,e.slug,
+		e.city_id as city, e.premium, e.hot_event,
+		(select count(id) from app_event_stalls where event_id=e.id and status =1 group by event_id) as stalls,
+		(select default_images from app_tags where id=event_category_id and status=1) as cat_img,
+		(select at.tag_title from app_tags as at where at.status=1 and at.id=e.event_category_id) as category,
+		(select ec.seo_url from app_eventcategories as ec where ec.status=1 and ec.tag_id=e.event_category_id) as seo_url,
+		e.minsprice,e.maxsprice,e.sprice_from, e.sprice_to,e.views,
+		IFNULL(date_format(from_unixtime(e.event_strt_date), '%D %M, %Y'), 'tentative') as from_date_formatted
+		from app_events as e where DATE_FORMAT( FROM_UNIXTIME( event_strt_date ) ,  '%Y-%m-%d' ) > '2019-04-25' order by e.id desc;
